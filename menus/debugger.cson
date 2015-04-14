@@ -1,0 +1,15 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Atom Debugger'
+      'submenu': [
+        {
+          'label': 'Toggle Debugging...'
+          'command': 'debugger:toggle'
+        }
+      ]
+    ]
+  }
+]

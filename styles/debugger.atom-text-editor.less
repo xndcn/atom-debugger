@@ -1,0 +1,27 @@
+// Note: This file is specially named!
+// Less files with the name `*.atom-text-editor.less` will be loaded into the text-editor!
+//
+// Since these styles applies to the editor, this file needs to be loaded in the
+// context of the editor.
+
+@import "ui-variables";
+
+//* {
+//  cursor: wait !important;
+//}
+
+.debugger-breakpoint-line {
+  background-color: @background-color-error !important;
+}
+
+.debugger-stopped-line {
+  .icon-right {
+    visibility: visible;
+  }
+
+  .icon-right:before {
+    content: "\f03e";
+    color: @background-color-warning;
+    font-family: "Octicons Regular";
+  }
+}

@@ -1,0 +1,49 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.atom-debugger {
+  padding: @component-padding/2;
+
+  .header {
+    padding: @component-padding/4 @component-padding/2;
+  }
+  .header-item {
+    display: inline-block;
+    margin: @component-padding/4 0;
+  }
+  .sub-title {
+    padding-left: @component-padding;
+    color: @text-color-subtle;
+  }
+
+  .checkbox {
+    padding-left: 2.25em;
+
+    input[type="checkbox"] {
+      display: inline-block;
+      font-size: inherit;
+      position: relative;
+      width: 1.5em;
+      height: 1.5em;
+      margin: 0 0 0 -2.25em;
+      border-radius: @component-border-radius;
+    }
+
+    .checkbox-label {
+      -webkit-user-select: none;
+      display: inline-block;
+      font-size: 1.2em;
+    }
+  }
+}
+
+.atom-debugger.stopped {
+  cursor: '';
+}
+
+.atom-debugger.running {
+  cursor: wait;
+}

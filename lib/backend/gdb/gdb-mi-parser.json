@@ -1,0 +1,60 @@
+{
+  "lex": {
+    "rules": [
+      ["[0-9]+",                       "return 'NUMBER'"],
+      ["\"(\\\\.|[^\"])*\"",           "return 'CSTRING';"],
+      ["[\\^\\,=\\[\\]\\{\\}\"*]",     "return yytext;"],
+      ["[^\\^\\,=\\[\\]\\{\\}\"*\\s]+","return 'STRING';"],
+      ["\\s+",                         "/* skip whitespace */"],
+      ["$",                            "return 'EOF';"]
+    ]
+  },
+
+  "start": "START",
+
+  "moduleInclude": "var RESULT = {DONE: 0, RUNNING: 1, CONNECTED: 2, ERROR: 3, EXIT: 4, STOPPED: 5}; exports.RESULT = RESULT;",
+
+  "bnf": {
+    "START": [
+      ["result_record", "return $1"],
+      ["async_output", "return $1"]
+    ],
+    "result_record": [["token ^ result_with_class EOF", "$$ = {token: $1, clazz: $3.clazz, result: $3.result};"]],
+    "token": [["NUMBER", "$$ = Number(yytext);"]],
+    "result_with_class": [
+      ["result_class", "$$ = {clazz: $1, result: null};"],
+      ["result_class , result_one_more", "$$ = {clazz: $1, result: $3};"]
+    ],
+    "result_class": [["STRING", "$$ = RESULT[$1.toUpperCase()];"]],
+    "result_one_more": [
+      ["result", "$$ = $1;"],
+      ["result_one_more , result", "$$ = $1; var key = Object.keys($3)[0]; $$[key] = $3[key];"]
+    ],
+    "result": [["variable = value", "$$ = {}; $$[$1] = $3;"]],
+    "variable": [["STRING", "$$ = $1;"]],
+    "value": [
+      ["const", "$$ = $1;"],
+      ["tuple", "$$ = $1;"],
+      ["list", "$$ = $1;"]
+    ],
+    "const": [["CSTRING", "$$ = $1.substr(1, $1.length-2);"]],
+    "tuple": [
+      ["{ }", "$$ = {};"],
+      ["{ result_one_more }", "$$ = $2;"]
+    ],
+    "list": [
+      ["[ ]", "$$ = [];"],
+      ["[ value_one_more ]", "$$ = $2;"],
+      ["[ list_result_one_more ]", "$$ = $2;"]
+    ],
+    "value_one_more": [
+      ["value", "$$ = [$1];"],
+      ["value_one_more , value", "$$ = $1.concat($3);"]
+    ],
+    "list_result_one_more": [
+      ["result", "var key = Object.keys($1)[0]; $$ = {}; $$[key] = [$1[key]];"],
+      ["list_result_one_more , result", "var key = Object.keys($3)[0]; $$ = {}; $$[key] = $1[key].concat($3[key]);"]
+    ],
+    "async_output": [["result_with_class EOF", "$$ = $1;"]]
+  }
+}
