@@ -62,6 +62,14 @@ class DebuggerView extends View
   getEditor: (fullpath) ->
     return @cachedEditors[fullpath]
 
+  goExitedStatus: ->
+    @continueButton.addClass('disabled')
+    @interruptButton.addClass('disabled')
+    @stepButton.addClass('disabled')
+    @nextButton.addClass('disabled')
+    @removeClass('running')
+    @addClass('stopped')
+
   goStoppedStatus: ->
     @continueButton.removeClass('disabled')
     @interruptButton.addClass('disabled')
@@ -214,15 +222,17 @@ class DebuggerView extends View
     @GDB.onExecAsyncStopped (result) =>
       @goStoppedStatus()
 
-      frame = result.frame
-      fullpath = path.resolve(frame.fullname)
-      line = Number(frame.line)-1
-
-      if @exists(fullpath)
-        atom.workspace.open(fullpath, {debugging: true, fullpath: fullpath, startline: line}).done (editor) =>
-          @stopped = {marker: @markStoppedLine(editor, line), fullpath, line}
+      unless frame = result.frame
+        @goExitedStatus()
       else
-        @GDB.next (result) ->
+        fullpath = path.resolve(frame.fullname)
+        line = Number(frame.line)-1
+
+        if @exists(fullpath)
+          atom.workspace.open(fullpath, {debugging: true, fullpath: fullpath, startline: line}).done (editor) =>
+            @stopped = {marker: @markStoppedLine(editor, line), fullpath, line}
+        else
+          @GDB.next (result) ->
 
   # Tear down any state and detach
   destroy: ->
