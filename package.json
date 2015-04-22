@@ -14,9 +14,6 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.0"
   },
-  "scripts": {
-    "preinstall": "#jison lib/backend/gdb/gdb-mi-parser.json -o lib/backend/gdb/gdb-mi-parser.js"
-  },
   "keywords": [
     "debugger",
     "gdb",
