@@ -176,7 +176,10 @@ class DebuggerView extends View
 
   hackGutterDblClick: (editor) ->
     component = atom.views.getView(editor).component
-    gutter = component.gutterComponent
+    # gutterComponent has been renamed to gutterContainerComponent
+    gutter  = component.gutterComponent
+    gutter ?= component.gutterContainerComponent
+
     gutter.domNode.addEventListener 'dblclick', (event) =>
       position = component.screenPositionForMouseEvent(event)
       line = editor.bufferPositionForScreenPosition(position).row
@@ -247,7 +250,8 @@ class DebuggerView extends View
 
     for editor in atom.workspace.getTextEditors()
       component = atom.views.getView(editor).component
-      gutter = component.gutterComponent
+      gutter  = component.gutterComponent
+      gutter ?= component.gutterContainerComponent
       gutter.domNode.removeEventListener 'dblclick'
 
     @panel.destroy()
