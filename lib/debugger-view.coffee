@@ -190,8 +190,8 @@ class DebuggerView extends View
   handleEvents: ->
     @subscriptions = new CompositeDisposable
 
-    @subscriptions.add atom.commands.add 'atom-workspace', 'debugger:toggle-breakpoint': =>
-      @debuggerView.toggleBreak(@getActiveTextEditor(), @contextLine)
+    @subscriptions.add atom.commands.add 'atom-workspace', 'debugger:toggle-breakpoint', =>
+      @toggleBreak(@getActiveTextEditor(), @contextLine)
 
     @subscriptions.add atom.workspace.observeTextEditors (editor) =>
       fullpath = editor.getPath()
