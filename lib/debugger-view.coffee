@@ -91,9 +91,15 @@ class DebuggerView extends View
   insertMainBreak: ->
     @GDB.insertBreak {location: 'main'}, (abreak) =>
       if abreak
-        fullpath = path.resolve(abreak.fullname)
-        line = Number(abreak.line)-1
-        @insertBreakWithoutEditor(fullpath, line)
+        if abreak.fullname
+          fullpath = path.resolve(abreak.fullname)
+          line = Number(abreak.line)-1
+          @insertBreakWithoutEditor(fullpath, line)
+        else
+          atom.confirm
+            detailedMessage: "Can't find debugging symbols\nPlease recompile with `-g` option."
+            buttons:
+              Exit: => @destroy()
 
   listExecFile: ->
     @GDB.listExecFile (file) =>
