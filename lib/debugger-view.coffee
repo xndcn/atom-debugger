@@ -191,7 +191,7 @@ class DebuggerView extends View
       line = editor.bufferPositionForScreenPosition(position).row
       @toggleBreak(editor, line)
       selection = editor.selectionsForScreenRows(line, line + 1)[0]
-      selection.clear()
+      selection?.clear()
 
   handleEvents: ->
     @subscriptions = new CompositeDisposable
