@@ -261,3 +261,4 @@ class DebuggerView extends View
       gutter.domNode.removeEventListener 'dblclick'
 
     @panel.destroy()
+    @detach()

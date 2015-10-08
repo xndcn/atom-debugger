@@ -27,7 +27,7 @@ module.exports = Debugger =
   serialize: ->
 
   toggle: ->
-    if @debuggerView
+    if @debuggerView and @debuggerView.hasParent()
       @debuggerView.destroy()
       @debuggerView = null
     else
