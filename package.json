@@ -2,7 +2,7 @@
   "name": "atom-debugger",
   "main": "./lib/debugger",
   "version": "0.1.6",
-  "description": "GDB debbuger for Atom",
+  "description": "GDB debugger for Atom",
   "activationCommands": {
     "atom-workspace": "debugger:toggle"
   },
